@@ -1,7 +1,10 @@
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.time.*;
+import java.util.Locale;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -18,7 +21,10 @@ public class Test {
     static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
-            String response = "Hello World from java!\n";
+        Instant inst = Instant.now();
+        ZonedDateTime plTime = inst.atZone(ZoneId.of("Europe/Warsaw"));
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            String response = "Hello World from java!\n"+sdf.format(plTime);
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
