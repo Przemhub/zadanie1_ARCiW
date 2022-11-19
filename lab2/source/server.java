@@ -49,9 +49,13 @@ public class Test {
 	    //System.out.println("Served hello world...");
         }else if(queryMap.get("cmd").equals("time")){
             Instant inst = Instant.now();
+            System.out.println("1");
             ZonedDateTime plTime = inst.atZone(ZoneId.of("Europe/Warsaw"));
+            System.out.println("2");
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            response = "Hello World from java!\n"+sdf.format(plTime);
+            System.out.println("3");
+            response = "Hello World from java!\n";
+            response = sdf.format(plTime).toString();
             t.sendResponseHeaders(200, response.length());
 	    //System.out.println("Served time...");
 	    }
@@ -66,8 +70,6 @@ public class Test {
 	    
 	    }else{
 	    response = "Incorrect query param";
-	    StringBuilder input1 = new StringBuilder();
-		
 	    t.sendResponseHeaders(400, response.length());
 	    }
 	   OutputStream os = t.getResponseBody();
