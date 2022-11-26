@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.*;
+import java.util.*;
 import java.util.Locale;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -17,19 +18,38 @@ public class Test {
         server.setExecutor(null); // creates a default executor
         server.start();
     }
+    public static Map<String, String> queryToMap(String query) {
+	    if(query == null) {
+		return null;
+	    }
+	    Map<String, String> result = new HashMap<>();
+	    for (String param : query.split("&")) {
+		String[] entry = param.split("=");
+		if (entry.length > 1) {
+		    result.put(entry[0], entry[1]);
+		}else{
+		    result.put(entry[0], "");
+		}
+	    }
+	    return result;
+	}
 
     static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
-        Instant inst = Instant.now();
-        ZonedDateTime plTime = inst.atZone(ZoneId.of("Europe/Warsaw"));
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            String response = "Hello World from java!\n"+sdf.format(plTime);
+        String response = "";
+	Map<String,String> queryMap = queryToMap(t.getRequestURI().getQuery());
+        String str = queryMap.get("str");
+        String upperCase = String.valueOf(str.chars().filter(Character::isUpperCase).count());
+        String lowerCase = String.valueOf(str.chars().filter(Character::isLowerCase).count());
+        String digit = String.valueOf(str.chars().filter(Character::isDigit).count());
+        response = "{upperCase:"+upperCase+",lowerCase:"+lowerCase+"digit:"+digit+"}";
+        
+        
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
-	    System.out.println("Served hello world...");
         }
     }
 
