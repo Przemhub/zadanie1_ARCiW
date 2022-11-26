@@ -23,13 +23,11 @@ public class Test {
         public void handle(HttpExchange t) throws IOException {
         Instant inst = Instant.now();
         ZonedDateTime plTime = inst.atZone(ZoneId.of("Europe/Warsaw"));
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            String response = "Hello World from java!\n"+sdf.format(plTime);
+            String response = plTime.getHour()+":"+plTime.getMinute()+":"+plTime.getSecond();
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
-	    System.out.println("Served hello world...");
         }
     }
 
