@@ -43,8 +43,10 @@ public class Test {
         String upperCase = String.valueOf(str.chars().filter(Character::isUpperCase).count());
         String lowerCase = String.valueOf(str.chars().filter(Character::isLowerCase).count());
         String digit = String.valueOf(str.chars().filter(Character::isDigit).count());
-        response = "{upperCase:"+upperCase+",lowerCase:"+lowerCase+"digit:"+digit+"}";
         
+        String special = String.valueOf(str.chars().filter((s)-> !Character.isDigit(s) && !Character.isLetter(s) && !Character.isWhitespace(s)).count());
+        response = "{\"upperCase\":"+upperCase+",\"lowerCase\":"+lowerCase+",\"digit\":"+digit+",\"special\":"+special+"}";
+        t.getResponseHeaders().set("Content-Type", "application/json");
         
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
