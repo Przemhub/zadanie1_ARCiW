@@ -45,7 +45,7 @@ public class Test {
         String digit = String.valueOf(str.chars().filter(Character::isDigit).count());
         
         String special = String.valueOf(str.chars().filter((s)-> !Character.isDigit(s) && !Character.isLetter(s) && !Character.isWhitespace(s)).count());
-        response = "{\"upperCase\":"+upperCase+",\"lowerCase\":"+lowerCase+",\"digit\":"+digit+",\"special\":"+special+"}";
+        response = "{\"upperCase\":"+upperCase+",\"lowerCase\":"+lowerCase+",\"digits\":"+digit+",\"special\":"+special+"}";
         t.getResponseHeaders().set("Content-Type", "application/json");
         
             t.sendResponseHeaders(200, response.length());
